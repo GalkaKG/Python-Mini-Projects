@@ -1,1 +1,0 @@
-This is basic Chatbot who will help you to book room in hotel.
