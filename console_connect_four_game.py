@@ -1,3 +1,6 @@
+from colorama import Fore, Back
+
+
 def choose_a_player(players_turn, counter):
     if counter % 2 == 0:
         player = players_turn[1][0]
@@ -14,7 +17,6 @@ def is_valid(curr_row, curr_col):
 
 
 def tracking_connected(board, row, col, player, player_sign, connected_dict):
-
     neighbours = [
         (-1, 0),
         (+1, 0),
@@ -27,15 +29,14 @@ def tracking_connected(board, row, col, player, player_sign, connected_dict):
     ]
 
     for r, c in neighbours:
-        curr_row, curr_col = row + r, col + c
-        if is_valid(curr_row, curr_col):
-            while is_valid(curr_row, curr_col) and board[curr_row][curr_col] == player_sign:
-                connected_dict[player] += 1
-                curr_row, curr_col = curr_row + r, curr_col + c
-            if connected_dict[player] == 4:
-                return player, not win
-            else:
-                connected_dict[player] = 1
+        curr_row, curr_col = row, col
+        while is_valid(curr_row, curr_col) and board[curr_row][curr_col] == player_sign:
+            connected_dict[player] += 1
+            curr_row, curr_col = curr_row + r, curr_col + c
+        if connected_dict[player] == 4:
+            return player, not win
+        else:
+            connected_dict[player] = 0
     return player, win
 
 
@@ -47,12 +48,12 @@ win = False
 row = 5
 
 player = ''
-connected_dict = {'Player 1': 1, 'Player 2': 1}
+connected_dict = {'Player 1': 0, 'Player 2': 0}
 
 while not win:
     counter += 1
     player, player_sign = choose_a_player(players_turn, counter)
-    print(f'{player}, please choose a column: ')
+    print(Back.CYAN + Fore.BLACK + f'{player}, please choose a column: ')
     col = int(input()) - 1
 
     if is_valid(0, col) and board[0][col] != 0:
@@ -75,7 +76,7 @@ while not win:
             print()
             continue
 
-    [print(row) for row in board]
+    [print(Back.CYAN + Fore.BLACK + f'{row}') for row in board]
     print()
     player, win = tracking_connected(board, row, col, player, player_sign, connected_dict)
 
