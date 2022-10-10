@@ -58,7 +58,14 @@ while not win:
     counter += 1
     player, player_sign = choose_a_player(players_turn, counter)
     print(Back.CYAN + Fore.BLACK + f'{player}, please choose a column: ')
-    col = int(input()) - 1
+
+    try:
+        col = int(input()) - 1
+        
+    except ValueError:
+        print('You can use only a numbers!')
+        print()
+        continue
 
     if col < 0:
         print('Please choose a number between 1 and 7')
