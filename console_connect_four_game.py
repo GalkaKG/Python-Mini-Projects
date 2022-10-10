@@ -16,7 +16,7 @@ def is_valid(curr_row, curr_col):
         return True
 
 
-def tracking_connected(board, row, col, player, player_sign, connected_dict):
+def tracking_connected(board, curr_row, curr_col, player, player_sign, connected_dict):
     neighbours = [
         (-1, 0),
         (+1, 0),
@@ -28,8 +28,9 @@ def tracking_connected(board, row, col, player, player_sign, connected_dict):
         (+1, +1)
     ]
 
+    row, col = curr_row, curr_col
+
     for r, c in neighbours:
-        curr_row, curr_col = row, col
         while is_valid(curr_row, curr_col) and board[curr_row][curr_col] == player_sign:
             connected_dict[player] += 1
             curr_row, curr_col = curr_row + r, curr_col + c
@@ -37,6 +38,9 @@ def tracking_connected(board, row, col, player, player_sign, connected_dict):
             return player, not win
         else:
             connected_dict[player] = 0
+
+        curr_row, curr_col = row, col
+
     return player, win
 
 
@@ -61,6 +65,8 @@ while not win:
         print()
         continue
 
+    curr_row = row
+
     try:
         if board[row][col] == 0:
             board[row][col] = player_sign
@@ -68,6 +74,7 @@ while not win:
             for idx_row in range(5, -1, -1):
                 if board[idx_row][col] == 0:
                     board[idx_row][col] = player_sign
+                    curr_row = idx_row
                     break
 
     except IndexError:
@@ -78,6 +85,6 @@ while not win:
 
     [print(Back.CYAN + Fore.BLACK + f'{row}') for row in board]
     print()
-    player, win = tracking_connected(board, row, col, player, player_sign, connected_dict)
+    player, win = tracking_connected(board, curr_row, col, player, player_sign, connected_dict)
 
 print(f'The winner is {player}')
