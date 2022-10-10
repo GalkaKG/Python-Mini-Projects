@@ -60,6 +60,10 @@ while not win:
     print(Back.CYAN + Fore.BLACK + f'{player}, please choose a column: ')
     col = int(input()) - 1
 
+    if col < 0:
+        print('Please choose a number between 1 and 7')
+        continue
+
     if is_valid(0, col) and board[0][col] != 0:
         print('This column is full. Please choose another one.')
         print()
