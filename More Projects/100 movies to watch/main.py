@@ -9,8 +9,8 @@ text = response.text
 soup = BeautifulSoup(text, "html.parser")
 movie_titles = [movie.getText() for movie in soup.find_all(name="h3", class_="title")]
 
-movies = []
+file = open("movies.txt", "a")
 for el in reversed(movie_titles):
-    movies.append(el)
+    file.write(el + "\n")
 
-print(*movies, sep="\n")
+file.close()
